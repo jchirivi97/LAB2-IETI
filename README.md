@@ -12,82 +12,42 @@ React project using Material-UI library.
 
 ## Part 2: Enable App Navigation 
 
-1. Refactor your `App.js`. 
-    * Create a new file called `TodoApp.js` under the `components` folder and extract all the logic of the Todo App into this file.
-    * Move the rest of the files related to the TodoApp component into the `components` folder.
-    * Change the Todo components to use react Material elements: Button, TextField, Card and DatePickers.
+- Constantes para cada vista 
 
-2. Add the `react-router-dom` dependency to your `package.json` file and install it:
+![image](https://user-images.githubusercontent.com/48265107/108297567-76965300-7169-11eb-87a1-ac4234cfe983.png)
 
-```javascript
-   "react-router-dom": "^4.3.1"   
-```
 
-```javascript
-   npm install
-```
-        
-3. Create a constant for each View (Login and TodoApp) in the App.js file:
-
-```javascript
-const LoginView = () => (
-      <Login/>
-  );
-
-const TodoAppView = () => (
-      <TodoApp/>
-  );
-```
-
-4. Import the following components in the `App.js` file:
+- Import the following components in the `App.js` file:
 
 ```javascript
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
 ```
 
-5. Update the _render_ method of `App.js` including the routing logic:
+- Update the _render_ method of `App.js` including the routing logic:
 
-```javascript
+![image](https://user-images.githubusercontent.com/48265107/108308234-6be5b900-717d-11eb-959d-e732320bf00f.png)
 
-    render() {
+-  Run the application and test that the navigation works.
 
-        return (
-            <Router>
-                <div className="App">
-                    <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo"/>
-                        <h1 className="App-title">TODO React App</h1>
-                    </header>
+Login:
 
-                    <br/>
-                    <br/>
+![image](https://user-images.githubusercontent.com/48265107/108308347-9cc5ee00-717d-11eb-92e1-86b8050025c0.png)
 
-                    <ul>
-                        <li><Link to="/">Login</Link></li>
-                        <li><Link to="/todo">Todo</Link></li>
-                    </ul>
+Todo:
 
-                    <div>
-                        <Route exact path="/" component={LoginView}/>
-                        <Route path="/todo" component={TodoAppView}/>
-                    </div>
-                </div>
-            </Router>
-        );
-    }
-```
-
-6. Run the application and test that the navigation works.
-
-7. Read the _React Route Training_ documentation and learn about the BrowserRouter Component:
-https://reacttraining.com/react-router/web/example/basic
+![image](https://user-images.githubusercontent.com/48265107/108308438-c0893400-717d-11eb-86d2-b1b110b92c09.png)
 
 
-8. Add a state *isLoggedIn* to the `App.js` component to know when and what view to display.
+- Add a state *isLoggedIn* to the `App.js` component to know when and what view to display.
 
-Tip: Don't attempt to use the _Redirect_ component of the React Router to handle your public and private routes. For now, it would be enough to allow or forbid the access to a _Route_ by using boolean javascript expression inside your JSX.
+![image](https://user-images.githubusercontent.com/48265107/108307972-e95cf980-717c-11eb-9813-eee0ad7106a7.png)
 
-9. Set the default value of *isLoggedIn* to false and then add a condition inside the render method that renders the correct view.
+![image](https://user-images.githubusercontent.com/48265107/108308044-0bef1280-717d-11eb-9b85-28d4f646bdbf.png)
+
+
+- Set the default value of *isLoggedIn* to false and then add a condition inside the render method that renders the correct view.
+
+![image](https://user-images.githubusercontent.com/48265107/108307905-c6324a00-717c-11eb-9732-f74ec891a0a0.png)
 
 
 ## Part 3: Local Storage
@@ -106,12 +66,107 @@ localStorage.getItem('key');
   
 1. Use the local storage to store a default user (username and password).
 
+![image](https://user-images.githubusercontent.com/48265107/108312274-722b6380-7184-11eb-8699-58fe13176ea2.png)
+
+![image](https://user-images.githubusercontent.com/48265107/108312364-9d15b780-7184-11eb-82b4-0b91b094d5f6.png)
+
+
 2. Add the click handler to Sign In button in order to verify that the user exists (use the one saved on the *localStorage*)
+
+![image](https://user-images.githubusercontent.com/48265107/108311937-e4e80f00-7183-11eb-8404-5ebf7c03ea8a.png)
+
+
+![image](https://user-images.githubusercontent.com/48265107/108311975-f4ffee80-7183-11eb-94d2-8a67d7941dc3.png)
 
 3. Once the user is authenticated successfully then store the *isLoggedIn* on the storage and add the logic to make sure this value is set to state everytime the application is loaded.
 This will prevent the user authentication every time!
 
+```javascript
+class Login extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state={
+            user: '',
+            password:''
+        }
+        this.loggear = this.loggear.bind(this);
+        this.user = this.user.bind(this);
+        this.password = this.password.bind(this);
+    }
+
+    render(){
+        return (
+            <React.Fragment>
+                <CssBaseline />
+                <main className="layout">
+                    <Paper className="paper">
+                        <Avatar className="avatar">
+                            <LockIcon />
+                        </Avatar>
+                        <Typography variant="h2">Sign in</Typography>
+                        <form className="form" onSubmit={this.loggear}>
+                            <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="email">Email Address</InputLabel>
+                                <Input id="email" name="email" autoComplete="email" autoFocus
+                                    onChange={this.user}
+                                />
+                            </FormControl>
+                            <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="password">Password</InputLabel>
+                                <Input
+                                    name="password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    onChange={this.password}
+                                />
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className="submit"
+                            >
+                                Sign in
+                            </Button>
+                        </form>
+                    </Paper>
+                </main>
+            </React.Fragment>
+        );
+    }
+
+    loggear(e){
+        e.preventDefault();
+        let data = JSON.parse(localStorage.getItem('user'));
+        if(this.state.user == data.user && this.state.password == data.clave){
+            localStorage.setItem('isLoggedIn',true);
+            alert('Ingreso exitoso')
+        }else{
+            alert('Usuario o Clave Incorrecta')
+            localStorage.setItem('isLoggedIn',false);
+        }
+    }
+    user(e){
+        this.setState({
+            user: e.target.value
+        })
+    }
+    password(e){
+        this.setState({
+            password: e.target.value
+        })
+    }
+
+}
+```
+
+
 4. Run the application and then stop the server and verify the data is persisted.
+
+![image](https://user-images.githubusercontent.com/48265107/108312364-9d15b780-7184-11eb-82b4-0b91b094d5f6.png)
 
 Tip: You can use the Google Chrome Developer tools under the Application tab to explore the Local Storage. 
    
