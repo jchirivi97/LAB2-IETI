@@ -13,6 +13,17 @@ import './Login.css'
 
 class Login extends React.Component{
 
+    constructor(props){
+        super(props)
+        this.state={
+            user: '',
+            password:''
+        }
+        this.loggear = this.loggear.bind(this);
+        this.user = this.user.bind(this);
+        this.password = this.password.bind(this);
+    }
+
     render(){
         return (
             <React.Fragment>
@@ -23,10 +34,12 @@ class Login extends React.Component{
                             <LockIcon />
                         </Avatar>
                         <Typography variant="h2">Sign in</Typography>
-                        <form className="form">
+                        <form className="form" onSubmit={this.loggear}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input id="email" name="email" autoComplete="email" autoFocus />
+                                <Input id="email" name="email" autoComplete="email" autoFocus
+                                    onChange={this.user}
+                                />
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -35,6 +48,7 @@ class Login extends React.Component{
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    onChange={this.password}
                                 />
                             </FormControl>
                             <Button
@@ -51,6 +65,28 @@ class Login extends React.Component{
                 </main>
             </React.Fragment>
         );
+    }
+
+    loggear(e){
+        e.preventDefault();
+        let data = JSON.parse(localStorage.getItem('user'));
+        if(this.state.user == data.user && this.state.password == data.clave){
+            localStorage.setItem('isLoggedIn',true);
+            alert('Ingreso exitoso')
+        }else{
+            alert('Usuario o Clave Incorrecta')
+            localStorage.setItem('isLoggedIn',false);
+        }
+    }
+    user(e){
+        this.setState({
+            user: e.target.value
+        })
+    }
+    password(e){
+        this.setState({
+            password: e.target.value
+        })
     }
 
 }
